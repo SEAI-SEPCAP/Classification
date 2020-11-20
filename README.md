@@ -1,4 +1,5 @@
 # SEPCAP-SEAI
 
 O ficheiro test.py é que tem o código,
-O resto são cenas sacadas da net ou coisas que nao tavam a funcionar
+
+O ficheiro detect_v1.py tem as cores e deteçao com as cores todas na mesma imagem
