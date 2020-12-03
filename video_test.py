@@ -1,7 +1,8 @@
 import numpy as np
 import cv2 as cv
 
-
+def nothing(x):
+    pass
 
 
 def area(w, h):
@@ -87,9 +88,21 @@ def thresh_callback(image, gray_image, val):
     cv.imshow('Square image', final_img)
 
 
+
+
+
 ##MAIN
 
-cap = cv.VideoCapture("video.mp4")
+cap = cv.VideoCapture("videos\\video.mp4")
+
+
+cv.namedWindow("Trackbars",)
+cv.createTrackbar("lb","Trackbars",0,255,nothing)
+cv.createTrackbar("lg","Trackbars",0,255,nothing)
+cv.createTrackbar("lr","Trackbars",0,255,nothing)
+cv.createTrackbar("ub","Trackbars",255,255,nothing)
+cv.createTrackbar("ug","Trackbars",255,255,nothing)
+cv.createTrackbar("ur","Trackbars",255,255,nothing)
 
 while(cap.isOpened()):
 
@@ -102,17 +115,37 @@ while(cap.isOpened()):
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     gray = cv.blur(gray, (3,3))
 
+    frame = cv.blur(frame, (3,3))
 
-    cv.imshow('frame', frame)
+    height, width = frame.shape[:2]
+    #frame = cv.resize(frame,(width/5, height/5), interpolation = cv.INTER_CUBIC)
+    #hsv = cv.cvtColor(frame,cv.COLOR_BGR2HSV)
+
+    #cv.imshow("hsv", hsv)
+
+    lb = cv.getTrackbarPos("lb","Trackbars")
+    lg = cv.getTrackbarPos("lg","Trackbars")
+    lr = cv.getTrackbarPos("lr","Trackbars")
+    ub = cv.getTrackbarPos("ub","Trackbars")
+    ug = cv.getTrackbarPos("ug","Trackbars")
+    ur = cv.getTrackbarPos("ur","Trackbars")
+
+    l_blue = np.array([lb,lg,lr])
+    u_blue = np.array([ub,ug,ur])
+    mask = cv.inRange(frame, l_blue, u_blue)
+    result = cv.bitwise_or(frame,frame,mask=mask)
+    #cv.imshow('frame', frame)
     
-    thresh = 100
+    #thresh = 100
 
-    thresh_callback(frame, gray, thresh)
-    color_in_frame(frame)
+    #thresh_callback(frame, gray, thresh)
+    #color_in_frame(frame)
+    cv.imshow("mask", mask)
+    cv.imshow("result",result)
+    
 
 
-
-    if cv.waitKey(0) == ord('q'):
+    if cv.waitKey(0) == ord('q'):            
         break
 
 
