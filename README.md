@@ -1,6 +1,7 @@
 # SEPCAP-SEAI
 
 VERSÃO MAIS RECENTE NO FOLDER V2.0
+
 -teste com video
 
 -bounding box CORRETA
